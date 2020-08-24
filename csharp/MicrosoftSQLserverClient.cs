@@ -9,6 +9,8 @@ public class MicrosoftSQLserverClient
     private const string db_username = "testuser";
     private const string db_password = "T3stUs3r!";
 
+    private const string db_table = "animals";
+
     public static void Main(string[] args)
     {
         // Build the connection string
@@ -31,6 +33,60 @@ public class MicrosoftSQLserverClient
                 Console.WriteLine("State: {0}", conn.State);
                 Console.WriteLine();
 
+                // Full SELECT statement
+                string sql1 = String.Format("select * from {0}", db_table);
+                using (var cmd = new SqlCommand(sql1, conn))
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        int columns = reader.FieldCount;
+                        Console.WriteLine("Total columns: {0}", columns);
+
+                        for (int ii = 0; ii < columns; ii++)
+                        {
+                            Console.WriteLine(" - {0} {1}", reader.GetName(ii), reader.GetDataTypeName(ii));
+                        }
+
+                        int number = 0;
+                        while (reader.Read())
+                        {
+                            number++;
+                            Console.Write(number);
+
+                            for (int ii = 0; ii < columns; ii++)
+                            {
+                                string type = reader.GetDataTypeName(ii);
+
+                                string value = "?";
+                                if (!reader.IsDBNull(ii))
+                                {
+                                    if (type.EndsWith("char"))
+                                    {
+                                        value = reader.GetString(ii);
+                                    }
+                                    else if (type.Equals("datetime"))
+                                    {
+                                        value = reader.GetDateTime(ii).ToString();
+                                    }
+                                    else if (type.Equals("int"))
+                                    {
+                                        value = reader.GetInt32(ii).ToString();
+                                    }
+                                    else if (type.Equals("tinyint"))
+                                    {
+                                        value = reader.GetByte(ii).ToString();
+                                    }
+                                }
+                                else
+                                {
+                                    value = "(null)";
+                                }
+
+                                Console.Write(" '{0}'", value);
+                            }
+
+                            Console.WriteLine();
+                        }
+                    }
             }
         }
         catch (SqlException mex)
