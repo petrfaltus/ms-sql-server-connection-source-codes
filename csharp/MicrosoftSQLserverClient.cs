@@ -11,11 +11,20 @@ public class MicrosoftSQLserverClient
 
     private const string db_table = "animals";
 
+    private const string db_update_column = "remark";
+    private const string db_update_column_variable = "@updatevar";
+
     private const string db_column = "id";
     private const string db_column_variable = "@var";
     private const int db_column_value = 1;
 
     private const string db_total_name = "total";
+
+    private static string GetNow()
+    {
+        DateTime dateTimeNow = DateTime.Now;
+        return dateTimeNow.ToString();
+    }
 
     public static void Main(string[] args)
     {
@@ -37,6 +46,21 @@ public class MicrosoftSQLserverClient
                 Console.WriteLine("Database: {0}", conn.Database);
                 Console.WriteLine("Connection timeout: {0}", conn.ConnectionTimeout);
                 Console.WriteLine("State: {0}", conn.State);
+                Console.WriteLine();
+
+                // UPDATE statement
+                string new_comment = "C# " + GetNow();
+
+                string sql0 = String.Format("update {0} set {1}={2} where {3}!={4}", db_table, db_update_column, db_update_column_variable, db_column, db_column_variable);
+                using (var cmd = new SqlCommand(sql0, conn))
+                {
+                    cmd.Parameters.AddWithValue(db_update_column_variable, new_comment);
+                    cmd.Parameters.AddWithValue(db_column_variable, db_column_value);
+
+                    int updatedRows = cmd.ExecuteNonQuery();
+                    Console.WriteLine("Total updated rows: {0}", updatedRows);
+                }
+
                 Console.WriteLine();
 
                 // Full SELECT statement
