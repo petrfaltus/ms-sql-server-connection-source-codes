@@ -1,0 +1,20 @@
+apply plugin: 'java'
+
+version = '1.0-SNAPSHOT'
+sourceCompatibility = 1.8
+
+tasks.withType(JavaCompile) {
+   options.encoding = 'UTF-8'
+}
+
+jar {
+   manifest {
+      attributes 'Main-Class': 'cz.petrfaltus.ms_sql_server.Program'
+   }
+
+   from {
+      configurations.compileClasspath.collect {
+         it.isDirectory() ? it : zipTree(it)
+      }
+   }
+}
