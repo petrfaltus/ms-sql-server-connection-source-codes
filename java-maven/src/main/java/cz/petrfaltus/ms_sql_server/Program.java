@@ -4,6 +4,7 @@ import static java.lang.System.out;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -23,6 +24,11 @@ public class Program {
 	private static final String DB_PASSWORD = "T3stUs3r!";
 
 	private static final String DB_TABLE = "animals";
+
+	private static final String DB_COLUMN = "id";
+	private static final int DB_COLUMN_VALUE = 1;
+
+	private static final String DB_TOTAL_NAME = "total";
 
 	public static void main(String[] args) {
 		try {
@@ -65,6 +71,31 @@ public class Program {
 				out.println();
 			}
 			out.println();
+
+			// SELECT WHERE statement
+			PreparedStatement stm2 = conn.prepareStatement("select count(*) as " + DB_TOTAL_NAME + " from " + DB_TABLE + " where " + DB_COLUMN + "!=?");
+			stm2.setInt(1, DB_COLUMN_VALUE);
+			ResultSet rs2 = stm2.executeQuery();
+			ResultSetMetaData rsmd2 = rs2.getMetaData();
+
+			int columns2 = rsmd2.getColumnCount();
+			out.println("Total columns: " + columns2);
+			for (int ii = 1; ii <= columns2; ii++) {
+				out.println(" - " + rsmd2.getColumnName(ii) + " " + rsmd2.getColumnTypeName(ii) + " (" + rsmd2.getPrecision(ii) + ")");
+			}
+
+			int rowNumber2 = 0;
+			while (rs2.next()) {
+				++rowNumber2;
+
+				out.print(rowNumber2 + ")");
+
+				for (int ii = 1; ii <= columns2; ii++) {
+					out.print(" '" + rs2.getObject(ii) + "'");
+				}
+
+				out.println();
+			}
 
 			// Disconnect the database
 			conn.close();
