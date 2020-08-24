@@ -24,6 +24,12 @@ $db_username = "testuser";
 $db_password = "T3stUs3r!";
 $db_table = "animals";
 
+$db_column = "id";
+$db_column_variable = ":var";
+$db_column_value = 1;
+
+$db_total_name = "total";
+
 $availableDrivers = PDO::getAvailableDrivers();
 
 echo "Available PDO drivers ";
@@ -64,6 +70,21 @@ try
    echo PHP_EOL;
 
    $stm1 = null;
+
+   // SELECT WHERE statement
+   $stm2 = $conn->prepare("select count(*) as ".$db_total_name." from ".$db_table." where ".$db_column."!=".$db_column_variable);
+   $stm2->bindParam($db_column_variable, $db_column_value, PDO::PARAM_INT);
+   $stm2->execute();
+   echo "Total columns: ".$stm2->columnCount().PHP_EOL;
+
+   echo "Fetch all rows ";
+   $lines2 = $stm2->fetchAll(PDO::FETCH_ASSOC);
+   if ($lines2 == false)
+     print_r($stm2->errorInfo());
+   else
+     print_r($lines2);
+
+   $stm2 = null;
 
    // Disconnect the database
    $conn = null;
