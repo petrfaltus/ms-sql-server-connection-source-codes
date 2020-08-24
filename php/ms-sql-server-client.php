@@ -24,6 +24,9 @@ $db_username = "testuser";
 $db_password = "T3stUs3r!";
 $db_table = "animals";
 
+$db_update_column = "remark";
+$db_update_column_variable = ":updatevar";
+
 $db_column = "id";
 $db_column_variable = ":var";
 $db_column_value = 1;
@@ -55,6 +58,18 @@ try
    print_r($conn->getAttribute(PDO::ATTR_SERVER_INFO));
    echo "ATTR_SERVER_VERSION = ".$conn->getAttribute(PDO::ATTR_SERVER_VERSION).PHP_EOL;
    echo PHP_EOL;
+
+   // UPDATE statement
+   $new_comment = "PHP ".date("j.n.Y H:i:s");
+
+   $stm0 = $conn->prepare("update ".$db_table." set ".$db_update_column."=".$db_update_column_variable." where ".$db_column."!=".$db_column_variable);
+   $stm0->bindParam($db_update_column_variable, $new_comment, PDO::PARAM_STR);
+   $stm0->bindParam($db_column_variable, $db_column_value, PDO::PARAM_INT);
+   $stm0->execute();
+   echo "Total updated rows: ".$stm0->rowCount().PHP_EOL;
+   echo PHP_EOL;
+
+   $stm0 = null;
 
    // Full SELECT statement
    $stm1 = $conn->prepare("select * from ".$db_table);
