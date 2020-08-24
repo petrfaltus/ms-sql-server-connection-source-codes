@@ -27,6 +27,73 @@ The subdirectory `docker-database` contains prepared Windows batches:
 - `04-exec-connection-to-database-testuser.cmd` - executes the **sqlcmd tool** terminal into running database container (as the user *testuser*)
 - `containers.cmd` - lists currently running containers and list of all existing containers
 
+### 3. Preparing the database
+For the connection to the database use either the **sqlcmd tool** terminal or the [Microsoft SQL Server Management Studio]
+
+#### Connection using sqlcmd tool
+Use prepared Windows batches, every SQL command terminate by the keyword **GO**
+```sql
+SELECT @@version;
+GO
+```
+
+#### Connection using Microsoft SQL Server Management Studio
+User *sa* (default password *Syst3mAdm1n!*)
+
+![user sa configuration](sql.server.management.studio.sa.png)
+
+User *testuser* (default password *T3stUs3r!*)
+
+![user testuser configuration](sql.server.management.studio.testuser.png)
+
+#### SQL lines for sa
+```sql
+CREATE DATABASE testdb;
+USE testdb;
+
+CREATE LOGIN testuser WITH PASSWORD = 'T3stUs3r!';
+CREATE USER testuser FOR LOGIN testuser;
+
+GRANT SELECT TO testuser;
+GRANT CREATE TABLE TO testuser;
+GRANT INSERT TO testuser;
+GRANT UPDATE TO testuser;
+GRANT ALTER TO testuser;
+
+ALTER LOGIN testuser WITH DEFAULT_DATABASE=testdb;
+```
+
+#### SQL lines for testuser
+```sql
+USE testdb;
+
+CREATE TABLE animals (
+  name VARCHAR(40) NOT NULL,
+  legs TINYINT NOT NULL,
+  created DATETIME DEFAULT GETDATE(),
+  updated DATETIME,
+  remark VARCHAR(80),
+  id INT IDENTITY(1,1) PRIMARY KEY NOT NULL
+);
+
+CREATE TRIGGER animals_update
+  ON animals
+  AFTER UPDATE
+AS 
+BEGIN
+    SET NOCOUNT ON;
+    UPDATE animals
+    SET updated = GETDATE()
+    WHERE id IN (SELECT id FROM Inserted)
+END;
+
+INSERT INTO animals (name, legs) VALUES ('chicken', 2);
+INSERT INTO animals (name, legs) VALUES ('fox', 4);
+INSERT INTO animals (name, legs) VALUES ('eagle', 2);
+INSERT INTO animals (name, legs) VALUES ('ant', 6);
+INSERT INTO animals (name, legs) VALUES ('horse', 4);
+```
+
 ## Versions
 Now in August 2020 I have the computer with **Windows 10 Pro 64bit**, **12GB RAM** and available **50GB free HDD space**
 
@@ -35,6 +102,7 @@ Now in August 2020 I have the computer with **Windows 10 Pro 64bit**, **12GB RAM
 | [GIT] | 2.26.0.windows.1 | |
 | [docker desktop] | 2.3.0.4 (46911) stable | 2 CPUs, 3GB memory, 1GB swap, 48GB disc image size |
 | [Microsoft SQL Server image] | 2017-CU8-ubuntu | password for sa: Syst3mAdm1n! |
+| [Microsoft SQL Server Management Studio] | 18.6 | |
 
 ## To do (my plans to the future)
 
@@ -42,3 +110,4 @@ Now in August 2020 I have the computer with **Windows 10 Pro 64bit**, **12GB RAM
 [GIT]: <https://git-scm.com>
 [docker desktop]: <https://docs.docker.com/desktop/>
 [Microsoft SQL Server image]: <https://hub.docker.com/_/microsoft-mssql-server>
+[Microsoft SQL Server Management Studio]: <https://docs.microsoft.com/en-us/sql/tools/overview-sql-tools?view=sql-server-ver15>
