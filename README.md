@@ -124,6 +124,26 @@ The subdirectory `csharp` contains prepared Windows batches:
 - `02-run.cmd` - runs the Windows executable
 - `03-clean.cmd` - deletes the Windows executable
 
+### 6. The PHP client source code
+- install [PHP] on your computer
+- set the OS environment `%PHP_HOME%` variable (must exist `"%PHP_HOME%\php.exe"`)
+- install [Microsoft ODBC Driver] (or already installed as a part of [Microsoft SQL Server Management Studio])
+- install [Microsoft Drivers for PHP for SQL Server]
+- copy `php_pdo_sqlsrv_74_nts_x64.dll` from [Microsoft Drivers for PHP for SQL Server] to the PHP directory `%PHP_HOME%`
+
+To the `php.ini` in the PHP directory `%PHP_HOME%` add lines
+```
+[PHP]
+extension_dir = "ext"
+extension=php_pdo_sqlsrv_74_nts_x64.dll
+
+[Date]
+date.timezone = Europe/Prague
+```
+
+The subdirectory `php` contains prepared Windows batch:
+- `01-run.cmd` - runs the code through the PHP interpreter
+
 ## Versions
 Now in August 2020 I have the computer with **Windows 10 Pro 64bit**, **12GB RAM** and available **50GB free HDD space**
 
@@ -131,11 +151,14 @@ Now in August 2020 I have the computer with **Windows 10 Pro 64bit**, **12GB RAM
 | ------ | ------ | ------ |
 | [GIT] | 2.26.0.windows.1 | |
 | [docker desktop] | 2.3.0.4 (46911) stable | 2 CPUs, 3GB memory, 1GB swap, 48GB disc image size |
-| [Microsoft SQL Server image] | 2017-CU8-ubuntu | password for sa: Syst3mAdm1n! |
+| [Microsoft SQL Server image] | 2017-CU8-ubuntu (14.00.3029) | password for sa: Syst3mAdm1n! |
 | [Microsoft SQL Server Management Studio] | 18.6 | |
 | [Java JDK] | 14.0.1 | Java(TM) SE Runtime Environment (build 14.0.1+7) |
 | [Apache Maven] | 3.6.3 | |
 | [Gradle Build Tool] | 6.3 | |
+| [PHP] | 7.4.4 | 7.4.4-nts-Win32-vc15-x64 |
+| [Microsoft ODBC Driver] | 17.06.0001 | msodbcsql64.msi, msodbcsql17.dll (version 03.80) |
+| [Microsoft Drivers for PHP for SQL Server] | 5.8 (5.8.0+12928) | SQLSRV58.exe |
 
 ## To do (my plans to the future)
 
@@ -147,3 +170,6 @@ Now in August 2020 I have the computer with **Windows 10 Pro 64bit**, **12GB RAM
 [Java JDK]: <https://www.oracle.com/java/technologies/javase-downloads.html>
 [Apache Maven]: <https://maven.apache.org/>
 [Gradle Build Tool]: <https://gradle.org/>
+[PHP]: <https://www.php.net/>
+[Microsoft ODBC Driver]: <https://docs.microsoft.com/en-us/sql/connect/odbc/download-odbc-driver-for-sql-server?view=sql-server-ver15>
+[Microsoft Drivers for PHP for SQL Server]: <https://docs.microsoft.com/en-us/sql/connect/php/microsoft-php-driver-for-sql-server?view=sql-server-ver15>
