@@ -22,6 +22,7 @@ $db_port = 1433;
 $db_name = "testdb";
 $db_username = "testuser";
 $db_password = "T3stUs3r!";
+$db_table = "animals";
 
 $availableDrivers = PDO::getAvailableDrivers();
 
@@ -48,6 +49,21 @@ try
    print_r($conn->getAttribute(PDO::ATTR_SERVER_INFO));
    echo "ATTR_SERVER_VERSION = ".$conn->getAttribute(PDO::ATTR_SERVER_VERSION).PHP_EOL;
    echo PHP_EOL;
+
+   // Full SELECT statement
+   $stm1 = $conn->prepare("select * from ".$db_table);
+   $stm1->execute();
+   echo "Total columns: ".$stm1->columnCount().PHP_EOL;
+
+   echo "Fetch all rows ";
+   $lines1 = $stm1->fetchAll(PDO::FETCH_ASSOC);
+   if ($lines1 == false)
+     print_r($stm1->errorInfo());
+   else
+     print_r($lines1);
+   echo PHP_EOL;
+
+   $stm1 = null;
 
    // Disconnect the database
    $conn = null;
