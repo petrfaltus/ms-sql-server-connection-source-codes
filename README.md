@@ -166,7 +166,7 @@ Now in August 2020 I have the computer with **Windows 10 Pro 64bit**, **12GB RAM
 [GIT]: <https://git-scm.com>
 [docker desktop]: <https://docs.docker.com/desktop/>
 [Microsoft SQL Server image]: <https://hub.docker.com/_/microsoft-mssql-server>
-[Microsoft SQL Server Management Studio]: <https://docs.microsoft.com/en-us/sql/tools/overview-sql-tools?view=sql-server-ver15>
+[Microsoft SQL Server Management Studio]: <https://docs.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms?view=sql-server-ver15>
 [Java JDK]: <https://www.oracle.com/java/technologies/javase-downloads.html>
 [Apache Maven]: <https://maven.apache.org/>
 [Gradle Build Tool]: <https://gradle.org/>
