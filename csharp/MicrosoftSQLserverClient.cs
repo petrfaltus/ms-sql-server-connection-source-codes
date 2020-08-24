@@ -11,6 +11,12 @@ public class MicrosoftSQLserverClient
 
     private const string db_table = "animals";
 
+    private const string db_column = "id";
+    private const string db_column_variable = "@var";
+    private const int db_column_value = 1;
+
+    private const string db_total_name = "total";
+
     public static void Main(string[] args)
     {
         // Build the connection string
@@ -87,6 +93,18 @@ public class MicrosoftSQLserverClient
                             Console.WriteLine();
                         }
                     }
+
+                Console.WriteLine();
+
+                // SELECT WHERE statement
+                string sql2 = String.Format("select count(*) as {0} from {1} where {2}!={3}", db_total_name, db_table, db_column, db_column_variable);
+                using (var cmd = new SqlCommand(sql2, conn))
+                {
+                    cmd.Parameters.AddWithValue(db_column_variable, db_column_value);
+
+                    Object result = cmd.ExecuteScalar();
+                    Console.WriteLine("Result: {0}", result);
+                }
             }
         }
         catch (SqlException mex)
