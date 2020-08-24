@@ -1,0 +1,30 @@
+repositories {
+   mavenCentral()
+}
+
+apply plugin: 'java'
+
+version = '1.0-SNAPSHOT'
+sourceCompatibility = 1.8
+
+tasks.withType(JavaCompile) {
+   options.encoding = 'UTF-8'
+}
+
+dependencies {
+   implementation 'com.microsoft.sqlserver:mssql-jdbc:8.4.0.jre14'
+}
+
+jar {
+   manifest {
+      attributes 'Main-Class': 'cz.petrfaltus.ms_sql_server.Program'
+   }
+
+   from {
+      configurations.compileClasspath.collect {
+         it.isDirectory() ? it : zipTree(it)
+      }
+   }
+
+   exclude 'META-INF/*.RSA', 'META-INF/*.SF', 'META-INF/*.DSA'
+}

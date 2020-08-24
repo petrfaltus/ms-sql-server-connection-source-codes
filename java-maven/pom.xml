@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+         https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>cz.petrfaltus.ms_sql_server</groupId>
+  <artifactId>core</artifactId>
+  <version>1.0-SNAPSHOT</version>
+
+  <properties>
+    <my.encoding>UTF-8</my.encoding>
+    <my.platformVersion>1.8</my.platformVersion>
+    <my.mainClass>${project.groupId}.Program</my.mainClass>
+
+    <project.build.sourceEncoding>${my.encoding}</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>${my.encoding}</project.reporting.outputEncoding>
+
+    <maven.compiler.source>${my.platformVersion}</maven.compiler.source>
+    <maven.compiler.target>${my.platformVersion}</maven.compiler.target>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.microsoft.sqlserver</groupId>
+      <artifactId>mssql-jdbc</artifactId>
+      <version>8.4.0.jre14</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-clean-plugin</artifactId>
+        <version>3.1.0</version>
+      </plugin>
+
+      <plugin>
+        <groupId>com.soebes.maven.plugins</groupId>
+        <artifactId>echo-maven-plugin</artifactId>
+        <version>0.4.0</version>
+
+        <executions>
+          <execution>
+            <phase>validate</phase>
+            <goals>
+              <goal>echo</goal>
+            </goals>
+            <configuration>
+              <echos>
+                <echo>Encoding: ${my.encoding}</echo>
+                <echo>Compiler Java version: ${my.platformVersion}</echo>
+                <echo>Main class: ${my.mainClass}</echo>
+              </echos>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>3.2.0</version>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.8.1</version>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>3.0.0-M3</version>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.2.0</version>
+
+        <configuration>
+          <archive>
+            <manifest>
+              <mainClass>${my.mainClass}</mainClass>
+            </manifest>
+          </archive>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>3.2.1</version>
+
+        <executions>
+          <execution>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <shadedArtifactAttached>true</shadedArtifactAttached>
+              <filters>
+                <filter>
+                  <artifact>com.microsoft.sqlserver:*</artifact>
+                  <excludes>
+                    <exclude>META-INF/*.SF</exclude>
+                    <exclude>META-INF/*.DSA</exclude>
+                    <exclude>META-INF/*.RSA</exclude>
+                  </excludes>
+                </filter>
+              </filters>
+              <transformers>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                  <mainClass>${my.mainClass}</mainClass>
+                </transformer>
+              </transformers>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>
