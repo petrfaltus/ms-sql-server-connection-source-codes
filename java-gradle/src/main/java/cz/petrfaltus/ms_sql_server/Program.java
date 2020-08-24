@@ -10,6 +10,10 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.Properties;
 
@@ -25,10 +29,21 @@ public class Program {
 
 	private static final String DB_TABLE = "animals";
 
+	private static final String DB_UPDATE_COLUMN = "remark";
+
 	private static final String DB_COLUMN = "id";
 	private static final int DB_COLUMN_VALUE = 1;
 
 	private static final String DB_TOTAL_NAME = "total";
+
+	private static String getNow()
+	{
+		Date date = new Date();
+		DateFormat dateFormat = new SimpleDateFormat("d.M.yyyy H:mm:ss");
+		String retValue = dateFormat.format(date);
+
+		return retValue;
+	}
 
 	public static void main(String[] args) {
 		try {
@@ -46,6 +61,16 @@ public class Program {
 				String value = connInfo.getProperty(key);
 				out.println(key + " : " + value);
 			}
+
+			// UPDATE statement
+			String new_comment = "Java " + getNow();
+
+			PreparedStatement stm0 = conn.prepareStatement("update " + DB_TABLE + " set " + DB_UPDATE_COLUMN + "=? where " + DB_COLUMN + "!=?");
+			stm0.setString(1, new_comment);
+			stm0.setInt(2, DB_COLUMN_VALUE);
+			int updatedRows0 = stm0.executeUpdate();
+			out.println("Total updated rows: " + updatedRows0);
+			out.println();
 
 			// Full SELECT statement
 			Statement stm1 = conn.createStatement();
