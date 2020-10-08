@@ -59,6 +59,7 @@ GRANT CREATE TABLE TO testuser;
 GRANT INSERT TO testuser;
 GRANT UPDATE TO testuser;
 GRANT ALTER TO testuser;
+GRANT EXECUTE TO testuser;
 
 ALTER LOGIN testuser WITH DEFAULT_DATABASE=testdb;
 ```
@@ -92,6 +93,28 @@ INSERT INTO animals (name, legs) VALUES ('fox', 4);
 INSERT INTO animals (name, legs) VALUES ('eagle', 2);
 INSERT INTO animals (name, legs) VALUES ('ant', 6);
 INSERT INTO animals (name, legs) VALUES ('horse', 4);
+
+CREATE OR ALTER FUNCTION factorial(@n INT) RETURNS INT AS
+BEGIN
+  IF (@n < 0)
+    RETURN -1;
+  DECLARE @result INT = 1;
+  IF (@n < 2)
+    RETURN @result;
+  DECLARE @ijk INT = 2;
+  WHILE @ijk <= @n
+    BEGIN
+      SET @result = @result * @ijk;
+      SET @ijk = @ijk + 1;
+    END;
+  RETURN @result;
+END;
+
+CREATE OR ALTER PROCEDURE add_and_subtract(@a INT, @b INT, @x INT OUT, @y INT OUT) AS
+BEGIN
+  SET @x = @a + @b;
+  SET @y = @a - @b;
+END;
 ```
 
 ### 4. The Java client source code
