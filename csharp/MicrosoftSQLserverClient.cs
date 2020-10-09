@@ -20,6 +20,11 @@ public class MicrosoftSQLserverClient
 
     private const string db_total_name = "total";
 
+    private const string db_factorial_variable = "@n";
+    private const int db_factorial_value = 4;
+
+    private const string db_result_name = "result";
+
     private static string GetNow()
     {
         DateTime dateTimeNow = DateTime.Now;
@@ -125,6 +130,18 @@ public class MicrosoftSQLserverClient
                 using (var cmd = new SqlCommand(sql2, conn))
                 {
                     cmd.Parameters.AddWithValue(db_column_variable, db_column_value);
+
+                    Object result = cmd.ExecuteScalar();
+                    Console.WriteLine("Result: {0}", result);
+                }
+
+                Console.WriteLine();
+
+                // SELECT function statement
+                string sql3 = String.Format("select dbo.factorial({0}) as {1}", db_factorial_variable, db_result_name);
+                using (var cmd = new SqlCommand(sql3, conn))
+                {
+                    cmd.Parameters.AddWithValue(db_factorial_variable, db_factorial_value);
 
                     Object result = cmd.ExecuteScalar();
                     Console.WriteLine("Result: {0}", result);
