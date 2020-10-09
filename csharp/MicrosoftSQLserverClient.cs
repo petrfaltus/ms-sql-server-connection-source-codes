@@ -1,4 +1,5 @@
 using System;
+using System.Data;
 using System.Data.SqlClient;
 
 public class MicrosoftSQLserverClient
@@ -24,6 +25,14 @@ public class MicrosoftSQLserverClient
     private const int db_factorial_value = 4;
 
     private const string db_result_name = "result";
+
+    private const string db_add_and_subtract_a_variable = "@a";
+    private const int db_add_and_subtract_a_value = 12;
+    private const string db_add_and_subtract_b_variable = "@b";
+    private const int db_add_and_subtract_b_value = 5;
+
+    private const string db_add_and_subtract_x_variable = "@x";
+    private const string db_add_and_subtract_y_variable = "@y";
 
     private static string GetNow()
     {
@@ -145,6 +154,28 @@ public class MicrosoftSQLserverClient
 
                     Object result = cmd.ExecuteScalar();
                     Console.WriteLine("Result: {0}", result);
+                }
+
+                Console.WriteLine();
+
+                // EXECUTE procedure statement
+                string sql4 = String.Format("dbo.add_and_subtract");
+                using (var cmd = new SqlCommand(sql4, conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    cmd.Parameters.AddWithValue(db_add_and_subtract_a_variable, db_add_and_subtract_a_value);
+                    cmd.Parameters.AddWithValue(db_add_and_subtract_b_variable, db_add_and_subtract_b_value);
+                    SqlParameter par3 = new SqlParameter(db_add_and_subtract_x_variable, SqlDbType.Int);
+                    par3.Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add(par3);
+                    SqlParameter par4 = new SqlParameter(db_add_and_subtract_y_variable, SqlDbType.Int);
+                    par4.Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add(par4);
+
+                    cmd.ExecuteNonQuery();
+                    Console.WriteLine("Result x: {0}", cmd.Parameters[db_add_and_subtract_x_variable].Value);
+                    Console.WriteLine("Result y: {0}", cmd.Parameters[db_add_and_subtract_y_variable].Value);
                 }
             }
         }
