@@ -33,6 +33,11 @@ $db_column_value = 1;
 
 $db_total_name = "total";
 
+$db_factorial_variable = ":n";
+$db_factorial_value = 4;
+
+$db_result_name = "result";
+
 $availableDrivers = PDO::getAvailableDrivers();
 
 echo "Available PDO drivers ";
@@ -98,8 +103,24 @@ try
      print_r($stm2->errorInfo());
    else
      print_r($lines2);
+   echo PHP_EOL;
 
    $stm2 = null;
+
+   // SELECT function statement
+   $stm3 = $conn->prepare("select dbo.factorial(".$db_factorial_variable.") as ".$db_result_name);
+   $stm3->bindParam($db_factorial_variable, $db_factorial_value, PDO::PARAM_INT);
+   $stm3->execute();
+   echo "Total columns: ".$stm3->columnCount().PHP_EOL;
+
+   echo "Fetch all rows ";
+   $lines2 = $stm3->fetchAll(PDO::FETCH_ASSOC);
+   if ($lines2 == false)
+     print_r($stm3->errorInfo());
+   else
+     print_r($lines2);
+
+   $stm3 = null;
 
    // Disconnect the database
    $conn = null;
