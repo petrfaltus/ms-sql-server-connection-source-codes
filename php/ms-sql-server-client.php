@@ -124,11 +124,11 @@ try
    echo "Total columns: ".$stm3->columnCount().PHP_EOL;
 
    echo "Fetch all rows ";
-   $lines2 = $stm3->fetchAll(PDO::FETCH_ASSOC);
-   if ($lines2 == false)
+   $lines3 = $stm3->fetchAll(PDO::FETCH_ASSOC);
+   if ($lines3 == false)
      print_r($stm3->errorInfo());
    else
-     print_r($lines2);
+     print_r($lines3);
    echo PHP_EOL;
 
    $stm3 = null;
