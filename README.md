@@ -117,6 +117,30 @@ BEGIN
 END;
 ```
 
+#### optional SQL check lines for testuser
+```sql
+USE testdb;
+
+SELECT * FROM animals;
+
+SELECT count(*) FROM animals;
+SELECT count(*) FROM animals WHERE id!=1;
+
+SELECT dbo.factorial(2);
+SELECT dbo.factorial(3);
+SELECT dbo.factorial(4);
+
+DECLARE @a INT = 12;
+DECLARE @b INT = 5;
+DECLARE @x INT;
+DECLARE @y INT;
+PRINT 'a = ' + CONVERT(VARCHAR(6), @a);
+PRINT 'b = ' + CONVERT(VARCHAR(6), @b);
+EXECUTE dbo.add_and_subtract @a, @b, @x OUT, @y OUT;
+PRINT 'x = ' + CONVERT(VARCHAR(6), @x);
+PRINT 'y = ' + CONVERT(VARCHAR(6), @y);
+```
+
 ### 4. The Java client source code
 - install [Java JDK] on your computer
 - set the OS environment `%JAVA_HOME%` variable (must exist `"%JAVA_HOME%\bin\java.exe"`)

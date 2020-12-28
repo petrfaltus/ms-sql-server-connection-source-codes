@@ -74,7 +74,10 @@ public class Program {
 			// UPDATE statement
 			String new_comment = "Java " + getNow();
 
-			PreparedStatement stm0 = conn.prepareStatement("update " + DB_TABLE + " set " + DB_UPDATE_COLUMN + "=? where " + DB_COLUMN + "!=?");
+			String stm0query = "update " + DB_TABLE + " set " + DB_UPDATE_COLUMN + "=? where " + DB_COLUMN + "!=?";
+			out.println(stm0query);
+
+			PreparedStatement stm0 = conn.prepareStatement(stm0query);
 			stm0.setString(1, new_comment);
 			stm0.setInt(2, DB_COLUMN_VALUE);
 			int updatedRows0 = stm0.executeUpdate();
@@ -82,8 +85,11 @@ public class Program {
 			out.println();
 
 			// Full SELECT statement
+			String stm1query = "select * from " + DB_TABLE;
+			out.println(stm1query);
+
 			Statement stm1 = conn.createStatement();
-			ResultSet rs1 = stm1.executeQuery("select * from " + DB_TABLE);
+			ResultSet rs1 = stm1.executeQuery(stm1query);
 			ResultSetMetaData rsmd1 = rs1.getMetaData();
 
 			int columns1 = rsmd1.getColumnCount();
@@ -107,7 +113,10 @@ public class Program {
 			out.println();
 
 			// SELECT WHERE statement
-			PreparedStatement stm2 = conn.prepareStatement("select count(*) as " + DB_TOTAL_NAME + " from " + DB_TABLE + " where " + DB_COLUMN + "!=?");
+			String stm2query = "select count(*) as " + DB_TOTAL_NAME + " from " + DB_TABLE + " where " + DB_COLUMN + "!=?";
+			out.println(stm2query);
+
+			PreparedStatement stm2 = conn.prepareStatement(stm2query);
 			stm2.setInt(1, DB_COLUMN_VALUE);
 			ResultSet rs2 = stm2.executeQuery();
 			ResultSetMetaData rsmd2 = rs2.getMetaData();
@@ -133,7 +142,10 @@ public class Program {
 			out.println();
 
 			// SELECT function statement
-			PreparedStatement stm3 = conn.prepareStatement("select dbo.factorial(?) as " + DB_RESULT_NAME);
+			String stm3query = "select dbo.factorial(?) as " + DB_RESULT_NAME;
+			out.println(stm3query);
+
+			PreparedStatement stm3 = conn.prepareStatement(stm3query);
 			stm3.setInt(1, DB_FACTORIAL_VALUE);
 			ResultSet rs3 = stm3.executeQuery();
 			ResultSetMetaData rsmd3 = rs3.getMetaData();
@@ -159,7 +171,10 @@ public class Program {
 			out.println();
 
 			// EXECUTE procedure statement
-			CallableStatement stm4 = conn.prepareCall("execute dbo.add_and_subtract ?, ?, ?, ?");
+			String stm4query = "execute dbo.add_and_subtract ?, ?, ?, ?";
+			out.println(stm4query);
+
+			CallableStatement stm4 = conn.prepareCall(stm4query);
 			stm4.setInt(1, DB_ADD_AND_SUBTRACT_A_VALUE);
 			stm4.setInt(2, DB_ADD_AND_SUBTRACT_B_VALUE);
 			stm4.registerOutParameter(3, Types.INTEGER);
