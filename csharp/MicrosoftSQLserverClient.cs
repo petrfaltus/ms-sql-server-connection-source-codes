@@ -66,6 +66,8 @@ public class MicrosoftSQLserverClient
                 string new_comment = "C# " + GetNow();
 
                 string sql0 = String.Format("update {0} set {1}={2} where {3}!={4}", db_table, db_update_column, db_update_column_variable, db_column, db_column_variable);
+                Console.WriteLine(sql0);
+
                 using (var cmd = new SqlCommand(sql0, conn))
                 {
                     cmd.Parameters.AddWithValue(db_update_column_variable, new_comment);
@@ -79,6 +81,8 @@ public class MicrosoftSQLserverClient
 
                 // Full SELECT statement
                 string sql1 = String.Format("select * from {0}", db_table);
+                Console.WriteLine(sql1);
+
                 using (var cmd = new SqlCommand(sql1, conn))
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
@@ -136,6 +140,8 @@ public class MicrosoftSQLserverClient
 
                 // SELECT WHERE statement
                 string sql2 = String.Format("select count(*) as {0} from {1} where {2}!={3}", db_total_name, db_table, db_column, db_column_variable);
+                Console.WriteLine(sql2);
+
                 using (var cmd = new SqlCommand(sql2, conn))
                 {
                     cmd.Parameters.AddWithValue(db_column_variable, db_column_value);
@@ -148,6 +154,8 @@ public class MicrosoftSQLserverClient
 
                 // SELECT function statement
                 string sql3 = String.Format("select dbo.factorial({0}) as {1}", db_factorial_variable, db_result_name);
+                Console.WriteLine(sql3);
+
                 using (var cmd = new SqlCommand(sql3, conn))
                 {
                     cmd.Parameters.AddWithValue(db_factorial_variable, db_factorial_value);
@@ -160,6 +168,8 @@ public class MicrosoftSQLserverClient
 
                 // EXECUTE procedure statement
                 string sql4 = String.Format("dbo.add_and_subtract");
+                Console.WriteLine(sql4);
+
                 using (var cmd = new SqlCommand(sql4, conn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
