@@ -77,7 +77,10 @@ try
    // UPDATE statement
    $new_comment = "PHP ".date("j.n.Y H:i:s");
 
-   $stm0 = $conn->prepare("update ".$db_table." set ".$db_update_column."=".$db_update_column_variable." where ".$db_column."!=".$db_column_variable);
+   $stm0query = "update ".$db_table." set ".$db_update_column."=".$db_update_column_variable." where ".$db_column."!=".$db_column_variable;
+   echo $stm0query.PHP_EOL;
+
+   $stm0 = $conn->prepare($stm0query);
    $stm0->bindParam($db_update_column_variable, $new_comment, PDO::PARAM_STR);
    $stm0->bindParam($db_column_variable, $db_column_value, PDO::PARAM_INT);
    $stm0->execute();
@@ -87,7 +90,10 @@ try
    $stm0 = null;
 
    // Full SELECT statement
-   $stm1 = $conn->prepare("select * from ".$db_table);
+   $stm1query = "select * from ".$db_table;
+   echo $stm1query.PHP_EOL;
+
+   $stm1 = $conn->prepare($stm1query);
    $stm1->execute();
    echo "Total columns: ".$stm1->columnCount().PHP_EOL;
 
@@ -102,7 +108,10 @@ try
    $stm1 = null;
 
    // SELECT WHERE statement
-   $stm2 = $conn->prepare("select count(*) as ".$db_total_name." from ".$db_table." where ".$db_column."!=".$db_column_variable);
+   $stm2query = "select count(*) as ".$db_total_name." from ".$db_table." where ".$db_column."!=".$db_column_variable;
+   echo $stm2query.PHP_EOL;
+
+   $stm2 = $conn->prepare($stm2query);
    $stm2->bindParam($db_column_variable, $db_column_value, PDO::PARAM_INT);
    $stm2->execute();
    echo "Total columns: ".$stm2->columnCount().PHP_EOL;
@@ -118,7 +127,10 @@ try
    $stm2 = null;
 
    // SELECT function statement
-   $stm3 = $conn->prepare("select dbo.factorial(".$db_factorial_variable.") as ".$db_result_name);
+   $stm3query = "select dbo.factorial(".$db_factorial_variable.") as ".$db_result_name;
+   echo $stm3query.PHP_EOL;
+
+   $stm3 = $conn->prepare($stm3query);
    $stm3->bindParam($db_factorial_variable, $db_factorial_value, PDO::PARAM_INT);
    $stm3->execute();
    echo "Total columns: ".$stm3->columnCount().PHP_EOL;
@@ -134,7 +146,10 @@ try
    $stm3 = null;
 
    // EXECUTE procedure statement
-   $stm4 = $conn->prepare("execute dbo.add_and_subtract ".$db_add_and_subtract_a_variable.", ".$db_add_and_subtract_b_variable.", ".$db_add_and_subtract_x_variable.", ".$db_add_and_subtract_y_variable);
+   $stm4query = "execute dbo.add_and_subtract ".$db_add_and_subtract_a_variable.", ".$db_add_and_subtract_b_variable.", ".$db_add_and_subtract_x_variable.", ".$db_add_and_subtract_y_variable;
+   echo $stm4query.PHP_EOL;
+
+   $stm4 = $conn->prepare($stm4query);
    $stm4->bindParam($db_add_and_subtract_a_variable, $db_add_and_subtract_a_value, PDO::PARAM_INT);
    $stm4->bindParam($db_add_and_subtract_b_variable, $db_add_and_subtract_b_value, PDO::PARAM_INT);
    $stm4->bindParam($db_add_and_subtract_x_variable, $db_add_and_subtract_x_value, PDO::PARAM_INT | PDO::PARAM_INPUT_OUTPUT, 20);
