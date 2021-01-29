@@ -210,7 +210,7 @@ Now in August 2020 I have the computer with **Windows 10 Pro 64bit**, **12GB RAM
 ## To do (my plans to the future)
 
 
-[GIT]: <https://git-scm.com>
+[GIT]: <https://git-scm.com/>
 [docker desktop]: <https://docs.docker.com/desktop/>
 [Microsoft SQL Server image]: <https://hub.docker.com/_/microsoft-mssql-server>
 [Microsoft SQL Server Management Studio]: <https://docs.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms?view=sql-server-ver15>
