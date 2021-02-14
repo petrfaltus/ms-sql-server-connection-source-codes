@@ -80,7 +80,7 @@ CREATE TABLE animals (
 CREATE TRIGGER animals_update
   ON animals
   AFTER UPDATE
-AS 
+AS
 BEGIN
     SET NOCOUNT ON;
     UPDATE animals
